@@ -19,6 +19,7 @@ int main()
 {
     double x = 0;
     double a = 1.1;
+    printf("Enter 'x': ");
     scanf("%lf", &x);
     printf("y = %.2lf", getY(x, a));
     return 0;
