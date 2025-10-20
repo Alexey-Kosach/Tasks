@@ -34,7 +34,10 @@ bool defineOOF(const double x);
  */
 double getY(const double x);
 
-
+/**
+ * brief Точка входа в программу
+ * @return возвращает 0, если программма выполнена корректно
+ */
 int main()
 {
 	SetConsoleCP(1251);// установка кодовой страницы win-cp 1251 в поток ввода
@@ -90,6 +93,7 @@ double getY(const double x)
 	return log(1 / ( 1+ 2 * x + pow(x, 2)));
 
 }
+
 
 
 
