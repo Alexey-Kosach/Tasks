@@ -82,7 +82,7 @@ void checkStep(const double step)
 
 bool defineOOF(const double x)
 {
-	return  x!=-1 ;
+	return  (1 + 2 * x + pow(x, 2))>0 ;
 }
 
 double getY(const double x)
@@ -90,5 +90,6 @@ double getY(const double x)
 	return log(1 / ( 1+ 2 * x + pow(x, 2)));
 
 }
+
 
 
