@@ -1,4 +1,4 @@
-﻿#pragma warning(disable:4996)
+#pragma warning(disable:4996)
 #define _USE_MATH_DEFINES
 #include <stdio.h>
 #include <math.h>
@@ -26,6 +26,10 @@ double getValue();
  * @param value значение проверяемой переменной
  */
 void checkValue(const double value);
+/**
+@brief Radians - переводит значение из радиан в градусы
+@brief Degrees - переводит значение иг градусов в радиан
+*/
 enum { Radians = 1, Degrees = 2 };
 /**
  * brief Точка входа в программу
@@ -46,6 +50,7 @@ int main() {
         break;
     default:
         printf("Ошибка");
+        return 1;
     }
     return 0;
 }
