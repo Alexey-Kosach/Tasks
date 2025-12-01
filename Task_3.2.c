@@ -103,7 +103,7 @@ double getSumN(const int n)
 
 double getRecurent(const int i)
 {
-    return -(i+2)/i*(i+3);
+    return (double)(-(i+2))/i*(i+3);
 }
 
 void checkPositive(const double value)
@@ -125,4 +125,5 @@ double getSumE(const double e)
         current *= getRecurent(i);
     }
     return result;
+
 }
