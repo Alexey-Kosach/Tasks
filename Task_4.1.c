@@ -1,4 +1,4 @@
-﻿#pragma warning(disable:4996)
+#pragma warning(disable:4996)
 
 
 #include <stdio.h>
@@ -9,19 +9,19 @@
  * введенное с клавиатуры с проверкой ввода
  * @return считанное значение
  */
-double getValue();
+int getValue();
 
 
 /**
  * @brief cчитывает натуральное число — размер массива.
- * @return size_t Корректный размер массива (> 0).
+ * @return size_t корректный размер массива (> 0).
  */
 size_t getSize();
 
 /**
  * @brief заполняет массив значениями, введёнными пользователем.
- * @param arr Указатель на массив.
- * @param size Размер массива.
+ * @param arr указатель на массив.
+ * @param size размер массива.
  */
 void fillArray(int* arr, const size_t size);
 
@@ -118,7 +118,7 @@ int main() {
 
     printf("\n\n2. Количество элементов, делящихся на N без остатка");
     printf("\nВведите число N: ");
-    int N = getValue();
+    const int N = getValue();
     int count = deln(arr, size, N);
     printf("Количество элементов, делящихся на %d: %d", N, count);
 
@@ -136,15 +136,15 @@ int main() {
     return 0;
 }
 
-double getValue()
+int getValue()
 {
-	double value = 0;
-	if (!scanf_s("%lf", &value))
-	{
-		printf("Error\n");
-		abort();
-	}
-	return value;
+    double value = 0;
+    if (!scanf_s("%lf", &value))
+    {
+        printf("Error\n");
+        abort();
+    }
+    return value;
 }
 
 size_t getSize()
@@ -176,8 +176,8 @@ void printArray(int* arr, const size_t size)
 }
 void fillRandom(int* arr, const size_t size)
 {
-    int start = -30;
-    int end = 70;
+    int start = getValue();
+    int end = getValue();
     printf("Диапазон заполнения: [%d; %d]\n", start, end);
     for (size_t i = 0; i < size; i++)
     {
@@ -188,6 +188,12 @@ void fillRandom(int* arr, const size_t size)
 int* copyArray(const int* arr, const size_t size)
 {
     int* copyArr = malloc(sizeof(int) * size);
+    if (copyArr == NULL)
+    {
+        printf("Ошибка выделения памяти ");
+        return NULL;
+    }
+
     for (size_t i = 0; i < size; i++)
     {
         copyArr[i] = arr[i];
@@ -197,8 +203,8 @@ int* copyArray(const int* arr, const size_t size)
 
 void Zamena(int* arr, const size_t size) {
     if (size < 2) {
-        printf("\nМассив слишком мал для замены предпоследнего элемента");
-        return;
+        printf("\nМассив слишком мал");
+        exit (1);
     }
 
     int max_index = 0;
