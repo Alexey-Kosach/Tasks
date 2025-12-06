@@ -1,4 +1,4 @@
-﻿#pragma warning(disable:4996)
+#pragma warning(disable:4996)
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,7 +8,7 @@
  * введенное с клавиатуры с проверкой ввода
  * @return считанное значение
  */
-double getValue();
+int getValue();
 
 /**
  * @brief читывает размер массива (натуральное число).
@@ -165,6 +165,7 @@ int main()
             flat[idx++] = arr[i][j];
     freeArray(arr, rows);
 
+
     printf("Введите K: ");
     int K = getValue();
 
@@ -185,7 +186,7 @@ int main()
     return 0;
 }
 
-double getValue()
+int getValue()
 {
     double value = 0;
     if (!scanf_s("%lf", &value))
