@@ -1,0 +1,242 @@
+#pragma warning(disable:4996)
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+/**
+ * @brief считывает значение,
+ * введенное с клавиатуры с проверкой ввода
+ * @return считанное значение
+ */
+int getValue();
+
+
+/**
+ * @brief cчитывает натуральное число — размер массива.
+ * @return size_t корректный размер массива (> 0).
+ */
+size_t getSize();
+
+/**
+ * @brief заполняет массив значениями, введёнными пользователем.
+ * @param arr указатель на массив.
+ * @param size размер массива.
+ */
+void fillArray(int* arr, const size_t size);
+
+/**
+ * @brief печатает одномерный массив.
+ * @param arr Массив для печати.
+ * @param size Размер массива.
+ */
+void printArray(int* arr, const size_t size);
+
+/**
+ * @brief заполняет массив случайными числами
+ * @param arr Указатель на массив.
+ * @param size Размер массива.
+ */
+void fillRandom(int* arr, const size_t size);
+
+/**
+ * @brief создаёт копию массива того же размера.
+ * @param arr Исходный массив.
+ * @param size Размер массива.
+ * @return int* Новый массив–копия.
+ */
+int* copyArray(const int* arr, const size_t size);
+
+/**
+ * @brief заменяет предпоследний элемент массива на максимальный по модулю.
+ * @param arr Массив.
+ * @param size Размер массива.
+ */
+void Zamena(int* arr, const size_t size);
+
+/**
+ * @brief считает количество элементов массива, значения которых делятся на заданное число N без остатка..
+ * @param arr Массив.
+ * @param size Размер массива.
+ * @param N Делитель (не должен быть равен нулю).
+ * @return int Количество элементов, кратных N.
+ */
+int deln(int* arr, const size_t size, int N);
+
+/**
+ * @brief находит номер первой пары соседних элементов с разными знаками.
+ * @param arr Массив.
+ * @param size Размер массива.
+ * @return int Индекс первого элемента пары; -1, если пара не найдена.
+ */
+int findFirstDifferentSigns(int* arr, const size_t size);
+
+/**
+@brief Manual - заполнение массива вручную
+@brief Random - заполнение массива рандомно
+*/
+enum { Manual = 1, Random = 2 };
+
+int main() {
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251); 
+
+    printf("Введите размер массива: ");
+    size_t size = getSize();
+
+    int* arr = malloc(size * sizeof(int));
+    if (arr == NULL)
+    {
+        printf("error");
+        exit(1);
+    }
+
+    printf("Выберите способ заполнения массива %d-вручную,%d-рандомно: ", Manual, Random);
+    int choice = getValue();
+    switch (choice)
+    {
+    case (Random):
+        fillRandom(arr, size);
+        break;
+    case (Manual):
+        fillArray(arr, size);
+        break;
+    default:
+        printf("Error");
+        free(arr);
+        exit(1);
+    }
+
+    printf("\nИсходный массив: ");
+    printArray(arr, size);
+    int* arr_copy1 = copyArray(arr, size);
+    printf("\n\n1. Замена предпоследнего элемента на максимальный по модулю:");
+    Zamena(arr_copy1, size);
+    printf("\nРезультат: ");
+    printArray(arr_copy1, size);
+    free(arr_copy1);
+
+    printf("\n\n2. Количество элементов, делящихся на N без остатка");
+    printf("\nВведите число N: ");
+    const int N = getValue();
+    int count = deln(arr, size, N);
+    printf("Количество элементов, делящихся на %d: %d", N, count);
+
+    printf("\n\n3. Поиск первой пары соседних элементов с разными знаками");
+    int pairIndex = findFirstDifferentSigns(arr, size);
+    if (pairIndex != -1) {
+        printf("\nПервая пара с разными знаками найдена на позициях %d и %d", pairIndex, pairIndex + 1);
+        printf("\nЭлементы: %d и %d", arr[pairIndex], arr[pairIndex + 1]);
+    }
+    else {
+        printf("\nПар с разными знаками не найдено");
+    }
+
+    free(arr);
+    return 0;
+}
+
+int getValue()
+{
+    double value = 0;
+    if (!scanf_s("%lf", &value))
+    {
+        printf("Error\n");
+        abort();
+    }
+    return value;
+}
+
+size_t getSize()
+{
+    int value = getValue();
+    if (value <= 0)
+    {
+        printf("ERROR");
+        abort();
+    }
+    return (size_t)value;
+}
+
+void fillArray(int* arr, const size_t size)
+{
+    for (size_t i = 0; i < size; i++)
+    {
+        printf("Введите элемент [%zu]: ", i);
+        arr[i] = getValue();
+    }
+}
+
+void printArray(int* arr, const size_t size)
+{
+    for (size_t i = 0; i < size; i++)
+    {
+        printf("%d ", arr[i]);
+    }
+}
+void fillRandom(int* arr, const size_t size)
+{
+    int start = getValue();
+    int end = getValue();
+    printf("Диапазон заполнения: [%d; %d]\n", start, end);
+    for (size_t i = 0; i < size; i++)
+    {
+        arr[i] = (rand() % (end - start + 1)) + start;
+    }
+}
+
+int* copyArray(const int* arr, const size_t size)
+{
+    int* copyArr = malloc(sizeof(int) * size);
+    if (copyArr == NULL)
+    {
+        printf("Ошибка выделения памяти ");
+        return NULL;
+    }
+
+    for (size_t i = 0; i < size; i++)
+    {
+        copyArr[i] = arr[i];
+    }
+    return copyArr;
+}
+
+void Zamena(int* arr, const size_t size) {
+    if (size < 2) {
+        printf("\nМассив слишком мал");
+        exit (1);
+    }
+
+    int max_index = 0;
+    for (size_t i = 1; i < size; i++) {
+        if (abs(arr[i]) > abs(arr[max_index])) {
+            max_index = i;
+        }
+    }
+
+    arr[size - 2] = arr[max_index];
+}
+
+int deln(int* arr, const size_t size, int N) {
+    if (N == 0) {
+        printf("Ошибка: деление на ноль!");
+        return 0;
+    }
+
+    int count = 0;
+    for (size_t i = 0; i < size; i++) {
+        if (arr[i] % N == 0) {
+            count++;
+        }
+    }
+    return count;
+}
+
+int findFirstDifferentSigns(int* arr, const size_t size) {
+    for (size_t i = 0; i < size - 1; i++) {
+        if ((arr[i] > 0 && arr[i + 1] < 0) || (arr[i] < 0 && arr[i + 1] > 0)) {
+            return i;
+        }
+    }
+    return -1;
+}
