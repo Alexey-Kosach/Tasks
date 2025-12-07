@@ -2,364 +2,291 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 /**
- * @brief считывает значение,
- * введенное с клавиатуры с проверкой ввода
- * @return считанное значение
+ * @brief Безопасно считывает целое число с клавиатуры.
+ * @return int Введенное пользователем число.
  */
 int getValue();
 
 /**
- * @brief читывает размер массива (натуральное число).
+ * @brief Запрашивает и возвращает положительный размер массива.
+ *        Выводит указанное сообщение перед запросом ввода.
  *
- * @param message сообщение, выводимое перед вводом.
- * @return size_t — корректный размер массива > 0.
+ * @param message Сообщение для пользователя.
+ * @return size_t Положительный размер массива.
  */
 size_t getSize(char* message);
 
 /**
- * @brief заполняет двумерный массив значениями, введёнными пользователем.
+ * @brief Заполняет массив значениями, введенными пользователем с клавиатуры.
+ *        Запрашивает каждый элемент по отдельности.
  *
- * @param arr указатель на двумерный массив.
- * @param rows количество строк.
- * @param columns количество столбцов.
+ * @param arr Указатель на массив для заполнения.
+ * @param size Размер массива.
  */
-void fillArray(int** arr, const size_t rows, const size_t columns);
+void fillArray(int* arr, const size_t size);
 
 /**
- * @brief печатает двумерный целочисленный массив на экран.
+ * @brief Выводит массив в формате [элемент1, элемент2, ..., элементN].
  *
- * @param arr указатель на двумерный массив.
- * @param rows количество строк.
- * @param columns количество столбцов.
+ * @param arr Указатель на массив для вывода.
+ * @param size Размер массива.
  */
-void printArray(int** arr, const size_t rows, const size_t columns);
+void printArray(int* arr, const size_t size);
 
 /**
- * @brief заполняет двумерный массив случайными числами из заданного диапазона.
+ * @brief Заполняет массив случайными числами в заданном диапазоне.
  *
- * @param arr указатель на двумерный массив.
- * @param rows количество строк.
- * @param columns количество столбцов.
+ * @param arr Указатель на массив для заполнения.
+ * @param size Размер массива.
+ * @param min Минимальное значение (включительно).
+ * @param max Максимальное значение (включительно).
  */
-void fillRandom(int** arr, const size_t rows, const size_t columns);
+void fillRandom(int* arr, const size_t size, int min, int max);
 
 /**
- * @brief выделяет память под двумерный массив размером rows × columns.
+ * @brief Заменяет предпоследний элемент массива на элемент с максимальным модулем.
+ *        Если массив содержит менее 2 элементов, функция не выполняет действий.
  *
- * @param rows количество строк.
- * @param columns количество столбцов.
- * @return int** указатель на созданный двумерный массив.
+ * @param arr Указатель на массив.
+ * @param size Размер массива.
  */
-int** getArray(const size_t rows, const size_t columns);
+void replaceMaxAbs(int* arr, const size_t size);
 
 /**
- * @brief освобождает память, выделенную под двумерный массив.
+ * @brief Вставляет элемент K после каждого четного элемента, который оканчивается на ноль.
+ *        Изменяет размер массива и перераспределяет память.
  *
- * @param arr указатель на двумерный массив.
- * @param rows количество строк.
- * @return int** всегда возвращает NULL.
+ * @param arr Указатель на указатель массива (для изменения размера).
+ * @param size Указатель на переменную размера (будет обновлен).
+ * @param K Значение для вставки.
  */
-int** freeArray(int** arr, const size_t rows);
+void insertK(int** arr, size_t* size, int K);
 
 /**
- * @brief проверяет корректность диапазона случайных чисел.
+ * @brief Создаёт массив M на основе массива P:
+ *        M[0] = 0, M[last] = 0, остальные элементы: M[i] = P[i] * i².
  *
- * @param start начало диапазона.
- * @param end конец диапазона.
+ * @param P Исходный массив.
+ * @param M Результирующий массив (должен быть предварительно выделен).
+ * @param size Размер массивов.
  */
-void checkRange(const int start, const int end);
+void createArrayMP(int* P, int* M, const size_t size);
 
-/**
- * @brief проверяет существование строки в массиве.
- *
- * @param row номер строки.
- * @param rows общее количество строк.
- */
-void chekrow(const size_t row, const size_t rows);
-
-/**
- * @brief для каждой строки массива заменяет предпоследний элемент
- *        элементом с максимальным модулем в этой строке.
- *
- * @param arr указатель на двумерный массив.
- * @param rows количество строк.
- * @param columns количество столбцов.
- */
-void replaceabs(int** arr, size_t rows, size_t columns);
-
-/**
- * @brief создаёт новый массив, добавляя число K после каждого элемента,
- *        кратного 10 (но не равного 0).
- *
- * @param arr исходный одномерный массив.
- * @param size размер массива arr.
- * @param K число, вставляемое после элементов, кратных 10.
- * @param newSize указатель для записи размера нового массива.
- * @return int* новый массив, содержащий дополнительные элементы.
- */
-int* kposlech(const int* arr, int size, int K, int* newSize);
-
-/**
- * @brief создаёт массив M на основе массива P:
- *        M[0] = 0, M[последний] = 0, остальные элементы: M[i] = P[i] * i^2.
- *
- * @param P исходный массив.
- * @param size размер массива.
- * @return int* новый массив M.
- */
-int* createArrayP(const int* P, int size);
-
-/**
- * @brief печатает одномерный массив.
- * @param arr массив для печати.
- * @param size размер массива.
- */
-void printArray1D(const int* arr, int size);
-
-/**
-@brief MANUAL - заполнение массива вручную
-@brief RANDOM - заполнение массива рандомно
-*/
 enum { RANDOM = 1, MANUAL };
-
 int main()
 {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-    size_t rows = getSize("Введите количество строк массива: ");
-    size_t columns = getSize("Введите количество столбцов массива: ");
-    int** arr = getArray(rows, columns);
+    printf("Введите размер массива: ");
+    size_t size = getSize();
+    int* arr = malloc(size * sizeof(int));
+    if (arr == NULL)
+    {
+        printf("Ошибка выделения памяти\n");
+        abort();
+    }
 
     printf("Выберите способ заполнения массива:\n"
-        "%d — случайными числами, %d — вручную\n", RANDOM, MANUAL);
-
+        "%d - случайными числами, %d - вручную: ", RANDOM, MANUAL);
     int choice = getValue();
+
     switch (choice)
     {
     case RANDOM:
-        fillRandom(arr, rows, columns);
+        fillRandom(arr, size, -30, 70);
         break;
     case MANUAL:
-        fillArray(arr, rows, columns);
+        fillArray(arr, size);
         break;
     default:
-        printf("Ошибка\n");
-        freeArray(arr, rows);
-        return 1;
+        printf("ERROR\n");
+        free(arr);
+        abort();
     }
 
-        printf("Исходный массив:\n");
-    printArray(arr, rows, columns);
+    printf("\nИсходный массив: ");
+    printArray(arr, size);
+    printf("Заменить предпоследний элемент на максимальный по модулю s");
+    if (size >= 2) {
+        int* arr1 = malloc(size * sizeof(int));
+        for (size_t i = 0; i < size; i++) {
+            arr1[i] = arr[i];
+        }
+        replaceMaxAbs(arr1, size);
+        printf("Результат: ");
+        printArray(arr1, size);
+        free(arr1);
+    }
+    else {
+        printf("Массив слишком мал для выполнения задания (нужно минимум 2 элемента)\n");
+    }
 
-    replaceabs(arr, rows, columns);
-    printf("Массив после замены:\n");
-    printArray(arr, rows, columns);
-    int flatSize = rows * columns;
-    int* flat = malloc(flatSize * sizeof(int));
-    int idx = 0;
-
-    for (size_t i = 0; i < rows; i++)
-        for (size_t j = 0; j < columns; j++)
-            flat[idx++] = arr[i][j];
-    freeArray(arr, rows);
-
-
-    printf("Введите K: ");
+    printf("Вставить элемент K после всех четных элементов, оканчивающихся на ноль");
+    printf("Введите значение K: ");
     int K = getValue();
 
-    int newSize;
-    int* flat2 = kposlech(flat, flatSize, K, &newSize);
+    size_t newSize = size;
+    int* arr2 = malloc(size * sizeof(int));
+    for (size_t i = 0; i < size; i++) {
+        arr2[i] = arr[i];
+    }
+    insertK(&arr2, &newSize, K);
+    printf("Результат (новый размер: %zu): ", newSize);
+    printArray(arr2, newSize);
 
-    printf("\nМассив после добавления числа К:\n");
-    printArray1D(flat2, newSize);
-
-    int* M = createArrayP(flat2, newSize);
-
-    printf("Массив M:\n");
-    printArray1D(M, newSize);
-    free(flat);
-    free(flat2);
+    printf("Сформировать массив M из массива P");
+    int* M = malloc(size * sizeof(int));
+    createArrayMP(arr, M, size);
+    printf("Массив P: ");
+    printArray(arr, size);
+    printf("Массив M: ");
+    printArray(M, size);
     free(M);
+    free(arr2);
+    free(arr);
 
     return 0;
 }
 
 int getValue()
 {
-    double value = 0;
-    if (!scanf_s("%lf", &value))
+    int value = 0;
+    if (scanf("%d", &value) != 1)
     {
-        printf("Error\n");
-        abort();
+        printf("Ошибка ввода\n");
+        exit(1);
     }
     return value;
 }
 
 size_t getSize(char* message)
 {
-    printf("%s", message);
     int value = getValue();
     if (value <= 0)
     {
-        printf("Error\n");
+        printf("Размер должен быть положительным\n");
         exit(1);
     }
     return (size_t)value;
 }
 
-void fillArray(int** arr, const size_t rows, const size_t columns)
+void fillArray(int* arr, const size_t size)
 {
-    for (size_t i = 0; i < rows; i++)
+    if (arr == NULL)
     {
-        for (size_t j = 0; j < columns; j++)
+        printf("Ошибка: передан NULL указатель\n");
+        abort();
+    }
+    for (size_t i = 0; i < size; i++)
+    {
+        printf("Введите элемент arr[%zu] = ", i);
+        arr[i] = Value();
+    }
+}
+
+void printArray(int* arr, const size_t size)
+{
+    if (arr == NULL)
+    {
+        printf("Ошибка: передан NULL указатель\n");
+        abort();
+    }
+    for (size_t i = 0; i < size; i++)
+    {
+        printf("%d ", arr[i]);
+    }
+}
+
+void fillRandom(int* arr, const size_t size, int min, int max)
+{
+    if (arr == NULL)
+    {
+        printf("Ошибка: передан NULL указатель\n");
+        abort();
+    }
+    for (size_t i = 0; i < size; i++)
+    {
+        arr[i] = rand() % (max - min + 1) + min;
+    }
+}
+void replaceMaxAbs(int* arr, const size_t size)
+{
+    if (arr == NULL)
+    {
+        printf("Ошибка: передан NULL указатель\n");
+        abort();
+    }
+
+    if (size < 2) {
+        printf("Массив слишком мал для замены предпоследнего элемента");
+        return;
+    }
+    int maxAbsIndex = 0;
+    int maxAbsValue = abs(arr[0]);
+
+    for (size_t i = 1; i < size; i++)
+    {
+        int absValue = abs(arr[i]);
+        if (absValue > maxAbsValue)
         {
-            printf("Введите a[%zu,%zu] = ", i, j);
-            arr[i][j] = getValue();
+            maxAbsValue = absValue;
+            maxAbsIndex = i;
         }
     }
+    arr[size - 2] = arr[maxAbsIndex];
 }
-
-void printArray(int** arr, const size_t rows, const size_t columns)
-{
-    for (size_t i = 0; i < rows; i++)
+void insertK(int** arr, size_t* size, int K) {
+    if (arr == NULL)
     {
-        for (size_t j = 0; j < columns; j++)
-            printf("%5d", arr[i][j]);
-
-        printf("\n");
+        printf("Ошибка: передан NULL указатель\n");
+        abort();
     }
-    printf("\n");
-}
-
-void fillRandom(int** arr, const size_t rows, const size_t columns)
-{
-    printf("Введите начало диапазона: ");
-    int start = getValue();
-    printf("Введите конец диапазона: ");
-    int end = getValue();
-    checkRange(start, end);
-
-    for (size_t i = 0; i < rows; i++)
-        for (size_t j = 0; j < columns; j++)
-            arr[i][j] = (rand() % (end - start + 1)) + start;
-}
-
-int** getArray(const size_t rows, const size_t columns)
-{
-    int** arr = malloc(rows * sizeof(int*));
-    if (!arr)
+    int countToInsert = 0;
+    for (size_t i = 0; i < *size; i++)
     {
-        printf("Ошибка выделения памяти!\n");
-        exit(1);
-    }
-
-    for (size_t i = 0; i < rows; i++)
-    {
-        arr[i] = malloc(columns * sizeof(int));
-        if (!arr[i])
+        if ((*arr)[i] % 2 == 0 && (*arr)[i] % 10 == 0)
         {
-            printf("Ошибка выделения памяти!\n");
-            exit(1);
+            countToInsert++;
         }
     }
 
-    return arr;
-}
-
-int** freeArray(int** arr, const size_t rows)
-{
-    for (size_t i = 0; i < rows; i++)
-        free(arr[i]);
-
-    free(arr);
-    return NULL;
-}
-
-void checkRange(const int start, const int end)
-{
-    if (start > end)
-    {
-        printf("Ошибка: начало больше конца!\n");
-        exit(1);
-    }
-}
-
-void chekrow(const size_t row, const size_t rows)
-{
-    if (row >= rows)
-    {
-        printf("Ошибка: неправильный номер строки!\n");
-        exit(1);
-    }
-}
-void replaceabs(int** arr, size_t rows, size_t columns)
-{
-    if (columns < 2)
-    {
-        printf("Ошибка: в строках меньше 2 элементов\n");
+    if (countToInsert == 0) {
+        printf("Ошибка");
         return;
     }
 
-    for (size_t r = 0; r < rows; r++)
+    size_t newSize = *size + countToInsert;
+    int* newArr = malloc(newSize * sizeof(int));
+    size_t newIndex = 0;
+    for (size_t i = 0; i < *size; i++)
     {
-        int maxAbsIndex = 0;
+        newArr[newIndex++] = (*arr)[i];
 
-        for (size_t j = 1; j < columns; j++)
+        if ((*arr)[i] % 2 == 0 && (*arr)[i] % 10 == 0)
         {
-            if (abs(arr[r][j]) > abs(arr[r][maxAbsIndex]))
-                maxAbsIndex = j;
+            newArr[newIndex++] = K;
         }
-        arr[r][columns - 2] = arr[r][maxAbsIndex];
     }
+    free(*arr);
+    *arr = newArr;
+    *size = newSize;
 }
-
-int* kposlech(const int* arr, int size, int K, int* newSize)
+void createArrayMP(int* P, int* M, const size_t size)
 {
-    int insertCount = 0;
-    for (int i = 0; i < size; i++)
-        if (arr[i] % 2 == 0 && arr[i] % 10 == 0 && arr[i] != 0)
-            insertCount++;
-
-    *newSize = size + insertCount;
-    int* result = malloc((*newSize) * sizeof(int));
-    if (!result)
-    {
-        printf("Ошибка: не удалось выделить память\n");
-        *newSize = size;
-        return NULL;
+    if (size == 0) {
+        printf("Ошибка");
+        return;
     }
-    int w = 0;
-    for (int i = 0; i < size; i++)
-    {
-        result[w++] = arr[i];
-
-        if (arr[i] % 2 == 0 && arr[i] % 10 == 0 && arr[i] != 0)
-            result[w++] = K;
-    }
-
-    return result;
-}
-
-int* createArrayP(const int* P, int size)
-{
-    if (size <= 0) return NULL;
-
-    int* M = malloc(size * sizeof(int));
-    if (!M) return NULL;
-
     M[0] = 0;
     if (size > 1)
+    {
         M[size - 1] = 0;
-    for (int i = 1; i < size - 1; i++)
-        M[i] = P[i] * i * i;
-
-    return M;
-}
-void printArray1D(const int* arr, int size)
-{
-    for (int i = 0; i < size; i++)
-        printf("%5d ", arr[i]);
-    printf("\n");
+        for (size_t i = 1; i < size - 1; i++)
+        {
+            M[i] = P[i] * (i * i);
+        }
+    }
 }
